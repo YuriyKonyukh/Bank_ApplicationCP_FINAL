@@ -11,7 +11,7 @@ HISTORY_PAY = []
 HISTORY_OPERATIONS = []
 
 
-class Credentials:
+class Credentials:  # Ввод данных пользователя
     def __init__(self):
         while True:
             while True:
@@ -64,17 +64,15 @@ class Credentials:
     def check_lower(self, user_input):  # Проверка на маленькие буквы латинского алфавита для почты
         return bool(re.search('[a-z]', user_input))
 
-# object_Enter = Enter()
 
-
-class Card:
+class Card:  # Создание банковских карт
 
     def __init__(self):
         # super().__init__()
         a = random.randint(1000000000000000, 9999999999999999)
         CARDS.append(a)
         print('Ваш 16-значный номер карточки: ', a)
-        print(CARDS)
+        # print(CARDS)  # Тестовый принт карточек
         for i in range(1):
             month = random.randint(1, 12)
             if 1 <= month < 10:
@@ -84,12 +82,12 @@ class Card:
             years = random.randint(22, 26)
             DATE_EXPIRED_YEARS.append(years)
             print(f'Срок действия вашей карты до {month:0{2}}/{years}')
-        print(DATE_EXPIRED_MONTH, '/', DATE_EXPIRED_YEARS)
+        # print(DATE_EXPIRED_MONTH, '/', DATE_EXPIRED_YEARS)  # Тестовый принт срока действия
         self.cvv = random.randint(100, 999)
         CVV.append(self.cvv)
-        print(f'cvv Вашей карты {self.cvv}')
+        print(f'CVV вашей карты {self.cvv}')
         MONEY_COUNTER.append(0)
-        print(CVV)
+        # print(CVV)  # Тестовый принт CVV
 
 
 def templates_card():  # шаблон для вывода карт
@@ -102,15 +100,15 @@ def templates_card():  # шаблон для вывода карт
 def card_balance():
     print("№\t \tНомер карты\t\t\t\t\tБаланс")
     for user in enumerate(CARDS):
-        print(f'{user[0] + 1}\t\t{user[1]}\t\t\t{MONEY_COUNTER[user[0]]}')
+        print(f'{user[0] + 1} \t\t{user[1]}\t\t\t {MONEY_COUNTER[user[0]]}')
 
 
 class Money:
 
     def card_receiver(self):  # зачисление средств
-        templates_card()
+        # templates_card()  # Добавить декоратор для красоты??? пока закомментируем
         self.user_choice = int(input('Выберите карту на которую будут зачислены денежные средства: '))
-        self.money = int(input("Какая сумма будет переведена вам на карту? "))
+        self.money = int(input("Какую сумму желаете зачислить на карту? "))
         MONEY_COUNTER[self.user_choice - 1] += self.money
         templates_card()
         HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tПополнение карты на ' + str(self.money))
@@ -118,22 +116,24 @@ class Money:
 
     def card_sender(self):  # перевод с карты на карту
         if len(CARDS) >= 2:
-            templates_card()
+            # templates_card()
             self.user_choice = int(input('Выберите карту с которой будет осуществлен денежный перевод: '))
             self.money = int(input("Какая сумма будет переведена с вашей карты: "))
-            templates_card()
+            # templates_card()
             if MONEY_COUNTER[self.user_choice - 1] == 0:
                 print('У вас нет денежных средств на карте!')
             elif MONEY_COUNTER[self.user_choice - 1] < self.money:
                 print('У вас недостаточно денежных средств для осуществления операции!')
             else:
                 MONEY_COUNTER[self.user_choice - 1] -= self.money
-                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tСписание денежных средств' + str(self.money))
+                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tСписание денежных средств' +
+                                          str(self.money))
                 self.user_choice = int(input('Выберите карту на которую будет осуществлен денежный перевод: '))
                 MONEY_COUNTER[self.user_choice - 1] += self.money
                 templates_card()
                 print('Транзакция завершена успешно!')
-                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tЗачисление денежных средств' + str(self.money))
+                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tЗачисление денежных средств' +
+                                          str(self.money))
         else:
             print('Пожалуйста, зарегистрируйте карту получателя.')
     #  добавить переводы в историю
@@ -152,24 +152,26 @@ class Money:
             if self.phone_pay[:4] != "+375" or len(self.phone_pay) != 13 or not self.phone_pay[1:].isdigit():
                 print("Введите корректные значения")
             self.money = int(input("Какая сумма будет снята с вашей карты: "))
-            self.zero_money_check()
+            # self.zero_money_check()
             if self.zero_money_check():
                 HISTORY_PAY.append(str(CARDS[self.user_choice - 1]) + '\tОплата мобильного телефона ' + str(self.money))
-                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tОплата мобильного телефона ' + str(self.money))
+                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tОплата мобильного телефона ' +
+                                          str(self.money))
         elif self.payments_choice == '2':
             print('Оплата услуг ЖКХ')
             self.money = int(input("Какая сумма будет снята с вашей карты: "))
-            self.zero_money_check()
+            # self.zero_money_check()
             if self.zero_money_check():
                 HISTORY_PAY.append(str(CARDS[self.user_choice - 1]) + '\tОплата услуг ЖКХ ' + str(self.money))
                 HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tОплата услуг ЖКХ ' + str(self.money))
         elif self.payments_choice == '3':
             print('Оплата интернет услуг')
             self.money = int(input("Какая сумма будет снята с вашей карты: "))
-            self.zero_money_check()
+            # self.zero_money_check()
             if self.zero_money_check():
                 HISTORY_PAY.append(str(CARDS[self.user_choice - 1]) + '\tОплата интернет услуг ' + str(self.money))
-                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tОплата интернет услуг ' + str(self.money))
+                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tОплата интернет услуг ' +
+                                          str(self.money))
 
     def zero_money_check(self):
         self.status = False
@@ -192,28 +194,28 @@ class Money:
 
 def last_history():
     print('Номер карты\t\t\tВладелец карты\t\tТранзакция')
-    print(f' {CARDS[-1]} \t\t{CREDENTIALS_NAME[-1]} {CREDENTIALS_SURNAME[-1]}\t\t{HISTORY_OPERATIONS[-1]}')
+    print(f'{CARDS[-1]} \t\t{CREDENTIALS_NAME[-1]} {CREDENTIALS_SURNAME[-1]}\t\t{HISTORY_OPERATIONS[-1]}')
 
 
 def all_history():
     print('№\t\tНомер карты\t\t\tТранзакции')
     for user in enumerate(HISTORY_OPERATIONS):
-        print(f'{user[0] + 1} \t\t{HISTORY_OPERATIONS[user[0]]}')
+        print(f'{user[0] + 1} \t\t {HISTORY_OPERATIONS[user[0]]}')
 
 
 object_credentials = Credentials()
-# object_Card = Card()
-# object_Card.__init__()
-# object_Money = Money()
-# object_Money.card_receiver()
-# object_Money.card_receiver()
-# object_Money.card_sender()
-# object_Money.card_sender()
-# object_Money.payments()
-# object_Money.payments()
-# last_history()
-# all_history()
-# print(HISTORY_PAY)
-# print(HISTORY_OPERATIONS)
+object_Card = Card()
+object_Card.__init__()
+object_Money = Money()
+object_Money.card_receiver()
+object_Money.card_receiver()
+object_Money.card_sender()
+object_Money.card_sender()
+object_Money.payments()
+object_Money.payments()
+last_history()
+all_history()
+print(HISTORY_PAY)
+print(HISTORY_OPERATIONS)
 
 # card_balance()
