@@ -1,5 +1,6 @@
 import random
 import re
+
 CARDS = []
 CVV = []
 CREDENTIALS_NAME = []
@@ -23,7 +24,7 @@ class Credentials:  # Ввод данных пользователя
                     break
             while True:
                 self.name = input('Введите ваше имя: ')
-                if self.check_upper(self.name):
+                if self.name.isupper():
                     print('Имя принято')
                     CREDENTIALS_NAME.append(self.name)
                     break
@@ -31,7 +32,7 @@ class Credentials:  # Ввод данных пользователя
                     print('Введите имя на латинском языке, большими буквами.')
             while True:
                 self.surname = input('Введите вашу фамилию: ')
-                if self.check_upper(self.surname):
+                if self.surname.isupper():
                     print('Фамилия принята')
                     CREDENTIALS_SURNAME.append(self.surname)
                     break
@@ -39,7 +40,7 @@ class Credentials:  # Ввод данных пользователя
                     print('Введите фамилию на латинском языке большими буквами.')
             while True:
                 self.mail = input('Введите вашу почту: ')
-                if self.check_lower(self.mail) and '@' in self.mail:
+                if self.mail.islower() and '@' in self.mail:
                     if '.' in self.mail[self.mail.index("@"):]:
                         print('Почта подтверждена!')
                         break
@@ -58,11 +59,11 @@ class Credentials:  # Ввод данных пользователя
         else:
             print('Введите корректные данные!')
 
-    def check_upper(self, user_input):  # Проверка на большие буквы латинского алфавита для имени и фамилии
-        return bool(re.search('[A-Z]', user_input))
+    # def check_upper(self, user_input):  # Проверка на большие буквы латинского алфавита для имени и фамилии
+    #     return bool(re.search('[A-Z]', user_input))
 
-    def check_lower(self, user_input):  # Проверка на маленькие буквы латинского алфавита для почты
-        return bool(re.search('[a-z]', user_input))
+    # def check_lower(self, user_input):  # Проверка на маленькие буквы латинского алфавита для почты
+    #     return bool(re.search('[a-z]', user_input))
 
 
 class Card:  # Создание банковских карт
@@ -136,16 +137,17 @@ class Money:
                                           str(self.money))
         else:
             print('Пожалуйста, зарегистрируйте карту получателя.')
+
     #  добавить переводы в историю
 
     def payments(self):  # платежи
         templates_card()
         self.user_choice = int(input('Выберите карту с которой будет осуществлен платеж: '))
         self.payments_choice = input('Меню: '
-              '\n1 - Оплата мобильного телефона'
-              '\n2 - Оплата услуг ЖКХ'
-              '\n3 - Оплата Интернет услуг'
-              '\nСделайте выбор: ')
+                                     '\n1 - Оплата мобильного телефона'
+                                     '\n2 - Оплата услуг ЖКХ'
+                                     '\n3 - Оплата Интернет услуг'
+                                     '\nСделайте выбор: ')
         if self.payments_choice == '1':
             print('Оплата мобильного телефона')
             self.phone_pay = input('Введите номер мобильного телефона: ')
@@ -184,6 +186,7 @@ class Money:
             print('Транзакция завершена успешна!')
             self.status = True
             return self.status
+
 
 # def card_lost():
 #     for i in range(3):
