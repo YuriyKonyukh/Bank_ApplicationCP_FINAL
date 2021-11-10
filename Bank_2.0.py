@@ -47,7 +47,7 @@ class Credentials:  # Ввод данных пользователя
                     CREDENTIALS_PHONE.append(self.phone_reg)
                     break
                 else:
-                    if len(CREDENTIALS_PHONE) == 0:
+                    if len(CREDENTIALS_PHONE) >= 0:
                         print('Номер зарегистрирован!')
                         CREDENTIALS_PHONE.append(self.phone_reg)
                         break
@@ -163,12 +163,19 @@ class Money:  # Валютные операции
                   f'\t\t\t{CVV[user[0]]}\t\t{MONEY_COUNTER[user[0]]}')
 
     def card_receiver(self):  # зачисление средств на карту
-        self.templates_card()
-        self.user_choice = int(input('Выберите карту на которую будет зачислены денежные средства: '))
-        self.money = int(input("Какую сумму желаете зачислить на карту? "))
-        MONEY_COUNTER[self.user_choice - 1] += self.money
-        HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tПополнение карты на ' + str(self.money))
-        print('Транзакция завершена успешна')
+        if CARDS:
+            self.templates_card()
+            self.user_choice = int(input('Выберите карту на которую будет зачислены денежные средства: '))
+            if 0 < self.user_choice <= len(CARDS):
+                self.money = int(input("Какую сумму желаете зачислить на карту? "))
+                MONEY_COUNTER[self.user_choice - 1] += self.money
+                HISTORY_OPERATIONS.append(str(CARDS[self.user_choice - 1]) + '\tПополнение карты на ' + str(self.money))
+                print('Транзакция завершена успешна')
+            else:
+                print('Выбрана несуществующая карта!')
+        else:
+            print('У вас нет карт!'
+                  '\nПожалуйста создайте карту!')
 
     def card_sender(self):  # перевод с карты на карту
         if len(CARDS) >= 2:
@@ -300,8 +307,11 @@ def card_balance():  # Баланс карты
 
 def last_history():  # История последней операции
     if CARDS:
-        print('Владелец карты\t\tТранзакция')
-        print(f'{CREDENTIALS_NAME[-1]} {CREDENTIALS_SURNAME[-1]}\t\t{HISTORY_OPERATIONS[-1]}')
+        if len(HISTORY_OPERATIONS) > 0:
+            print('Владелец карты\t\tТранзакция')
+            print(f'{CREDENTIALS_NAME[-1]} {CREDENTIALS_SURNAME[-1]}\t\t{HISTORY_OPERATIONS[-1]}')
+        else:
+            print('Транзакция по карте не производилась!')
     else:
         print('У вас нет карт!'
               '\nПожалуйста создайте карту!')
@@ -309,9 +319,12 @@ def last_history():  # История последней операции
 
 def all_history():  # История всех операций
     if CARDS:
-        print('№\t\tНомер карты\t\t\tТранзакции')
-        for user in enumerate(HISTORY_OPERATIONS):
-            print(f'{user[0] + 1} \t\t {HISTORY_OPERATIONS[user[0]]}')
+        if len(HISTORY_OPERATIONS) > 0:
+            print('№\t\tНомер карты\t\t\tТранзакции')
+            for user in enumerate(HISTORY_OPERATIONS):
+                print(f'{user[0] + 1} \t\t {HISTORY_OPERATIONS[user[0]]}')
+        else:
+            print('Операции с картами не производились!')
     else:
         print('У вас нет карт!'
               '\nПожалуйста создайте карту!')
@@ -382,17 +395,18 @@ def menu():  # Основное меню
             else:
                 print('Выберите один из предложенных вариантов.')
         elif menu_choice == '6':
-            print('Программа завершена.')
+            print('Вы перешли в главное меню')
+            break
         else:
             print('Выберите один из предложенных вариантов.')
 
 
-print('''Добро пожаловать в интернет-банкинг.
-Если вы новый пользователь нажмите - 1:
-Если вы уже являетесь пользователем нашего интернет-банкинга нажмите - 2:
-Для выхода из программы нажмите - 0''')
-user_choice = input('Ваш выбор: ')
 while True:
+    print('''Добро пожаловать в интернет-банкинг.
+    Если вы новый пользователь нажмите - 1:
+    Если вы уже являетесь пользователем нашего интернет-банкинга нажмите - 2:
+    Для выхода из системы нажмите - 0''')
+    user_choice = input('Ваш выбор: ')
     if user_choice == '1':
         object_Credentials.registration()
         object_Auth.authentication_phone()
@@ -401,21 +415,21 @@ while True:
         object_Auth.authentication_phone()
         menu()
     elif user_choice == '0':
-        print('Вы вышли из программы!'
+        print('Вы вышли из системы!'
               'До свидания!')
         break
     else:
         print('Нажмите пожалуйста цифру 1, 2 или 0!')
-conn = sqlite3.connect('bank2.db')  # Создайте новую Базу данных.
+conn = sqlite3.connect('bank.db')  # Создайте новую Базу данных.
 cursor = conn.cursor()
-cursor.execute('''CREATE TABLE IF NOT EXISTS bank2(id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Surname TEXT, 
+cursor.execute('''CREATE TABLE IF NOT EXISTS bank(id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Surname TEXT, 
 Phone TEXT, Email TEXT, Card_number INT,Month TEXT, Year INT, CVV INT, Money INT)''')
 for i in enumerate(CARDS):
-    cursor.execute('''INSERT INTO bank2(Name, Surname, Phone, Email, Card_number, Month, Year, CVV, Money)
+    cursor.execute('''INSERT INTO bank(Name, Surname, Phone, Email, Card_number, Month, Year, CVV, Money)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', (CREDENTIALS_NAME[0], CREDENTIALS_SURNAME[0], CREDENTIALS_PHONE[0],
                                            CREDENTIALS_EMAIL[0], CARDS[i[0]], DATE_EXPIRED_MONTH[i[0]],
                                            DATE_EXPIRED_YEARS[i[0]], CVV[i[0]], MONEY_COUNTER[i[0]]))
     conn.commit()
-# cursor.execute('''SELECT * FROM bank2''')
+# cursor.execute('''SELECT * FROM bank'')
 # k = cursor.fetchall()
 # print(k)
