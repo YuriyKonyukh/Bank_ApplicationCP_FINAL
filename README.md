@@ -1,6 +1,6 @@
 # Bank_Application #
 
-#### Collaboration project for creating bank application maded by Anzhelica Sakun and Yuriy Konyukh
+#### Collaboration project to creating bank application maded by Anzhelica Sakun and Yuriy Konyukh
 
 -------------------------------------------------------------------------------
 The following functionality has been implemented in the application:
