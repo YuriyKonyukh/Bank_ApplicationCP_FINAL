@@ -4,22 +4,22 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Вас приветствует Банк-ЮА!</title>
-<!--    <style type="text/css">-->
-<!--   BODY {-->
-<!--    background: url("https://i.ibb.co/kgvFnpq/bg1.jpg") no-repeat;-->
-<!--    background-size: 100%-->
-<!--   }-->
+    <style type="text/css">
+   BODY {
+    background: url("https://i.ibb.co/d41BK1z/bg1.jpg") no-repeat;
+    background-size: 100%
+   }
   </style>
 </head>
 <body>
 <h1>Добро пожаловать в интернет-банкинг!</h1>
 <br>
 <form action="{% url 'registration' %}">
-    <p><b>Если вы новый пользователь, зарегистрируйтесь</b></p>
+    <h3>Если вы новый пользователь, зарегистрируйтесь</h3>
 <input type = "submit" value="Регистрация" >
 </form>
 <form action="{% url 'login' %}">
-<p><b>Уже зарегистрированы? Войдите в систему</b></p>
+    <h3>Уже зарегистрированы? Войдите в систему</h3>
 <input type = "submit" value="Логин">
 </form>
 </body>
