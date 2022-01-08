@@ -22,5 +22,9 @@ urlpatterns = [
     path('main/', views.main),  # главная страница банка
     path('', views.bank),  # стартовая страница bank.html
     path('registration/', views.registration, name='registration'),  # страница регистрации
-    path('login/', views.login, name='login')  # страница логина
+    path('login/', views.login, name='login'),  # страница логина
+    path('history/', views.history, name='history'), # страница истории операций
+    path('cards/', views.cards, name='cards'), # страница перевода, пополнения и истории
+    path('cash_in/', views.cash_in, name='cash_in'), # страница
+    path('payments/', views.cash_out, name='cash_out') # страница логина
 ]

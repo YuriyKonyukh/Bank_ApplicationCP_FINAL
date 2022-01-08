@@ -14,22 +14,22 @@
 <div align="center"><h1>Пожалуйста, зарегистрируйтесь!</h1></div>
 <br>
 <div align="right">
-<h3>Введите номер мобильного телефона:</h3>
-<textarea cols="20" rows="1" name="userphone"></textarea>
-<br>
-<input type = "submit" value="Подтвердить">
 <h3>Введите ваше имя:</h3>
 <textarea cols="20" rows="1" name="userphone"></textarea>
 <br>
-<input type = "submit" value="Подтвердить">
 <h3>Введите вашу фамилию:</h3>
 <textarea cols="20" rows="1" name="userphone"></textarea>
 <br>
-<input type = "submit" value="Подтвердить">
+<h3>Введите номер мобильного телефона:</h3>
+<textarea cols="20" rows="1" name="userphone"></textarea>
+<br>
 <h3>Введите ваш E-mail:</h3>
 <textarea cols="20" rows="1" name="userphone"></textarea>
 <br>
-<input type = "submit" value="Подтвердить">
+<!--<input type = "submit" value="Отправить">-->
+<form action="{% url 'login' %}">
+    <input type = "submit" value="Подтвердить" >
+</form>
     </div>
 </body>
 </html>

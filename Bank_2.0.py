@@ -81,6 +81,13 @@ class Credentials:  # Ввод данных пользователя
         else:
             print("Вы ввели незарегистрированный номер")
 
+    def registration(self):  # Меню регистрации
+        self.registration_name()
+        self.registration_surname()
+        self.registration_phone_reg()
+        self.registration_mail()
+        self.registration_login()
+
     @staticmethod
     def check_upper(user_input):  # Проверка на большие буквы латинского алфавита для имени и фамилии
         return bool(re.search('[A-Z]', user_input))
@@ -88,13 +95,6 @@ class Credentials:  # Ввод данных пользователя
     @staticmethod
     def check_lower(user_input):  # Проверка на маленькие буквы латинского алфавита для почты
         return bool(re.search('[a-z]', user_input))
-
-    def registration(self):  # Меню регистрации
-        self.registration_name()
-        self.registration_surname()
-        self.registration_phone_reg()
-        self.registration_mail()
-        self.registration_login()
 
 
 object_Credentials = Credentials()
@@ -123,7 +123,7 @@ class Auth:  # Аутентификация пользователя
                 print('Пароль прошел проверку!')
                 break
             else:
-                print('Пароли не совпадают WTF????:)')
+                print('Введенные пароли не совпадают')
 
 
 object_Auth = Auth()
@@ -228,7 +228,7 @@ class Payments:  # Платежи
         if CARDS:
             print('Оплата мобильного телефона')
             self.templates_card()
-            self.user_choice = int(input('Выберите карту с которой будет осуществлен оплата: '))
+            self.user_choice = int(input('Выберите карту с которой будет осуществлена оплата: '))
             if 0 < self.user_choice <= len(CARDS):
                 self.phone_pay = input('Введите номер мобильного телефона: ')
                 if self.phone_pay[:4] != "+375" or len(self.phone_pay) != 13 or not self.phone_pay[1:].isdigit():
